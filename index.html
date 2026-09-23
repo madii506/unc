@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en" class="loading">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UNC</title>
+<meta name="description" content="You're unc now. Facebook was the warning. Walk unc around the virtual office, get your unc badge. Fees buy META for holders.">
+<meta property="og:title" content="UNC">
+<meta property="og:description" content="You're unc now. Facebook was the warning.">
+<meta property="og:image" content="/assets/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/assets/img/og.jpg">
+<meta name="theme-color" content="#f3efe6">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/anton-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+  // Links and the CA row render only when these are set.
+  window.CONFIG = { ca: '', x: '', pool: '', chart: '', launchpad: '' };
+</script>
+<script type="importmap">{"imports":{"three":"/assets/js/three.module.min.js","three/addons/":"/assets/js/addons/"}}</script>
+<style>
+@font-face{font-family:Anton;src:url(/assets/fonts/anton-latin-400-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Inter;font-weight:400;src:url(/assets/fonts/inter-latin-400-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Inter;font-weight:600;src:url(/assets/fonts/inter-latin-600-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Inter;font-weight:800;src:url(/assets/fonts/inter-latin-800-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Plex;font-weight:400;src:url(/assets/fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Plex;font-weight:600;src:url(/assets/fonts/ibm-plex-mono-latin-600-normal.woff2) format('woff2');font-display:swap}
+:root{--paper:#f3efe6;--card:#fbf9f3;--ink:#111114;--ink2:#3b3b42;--mute:#6d6b66;--blue:#0866ff;--navy:#0a1f55;--line:#111114;--hair:rgba(17,17,20,.16)}
+*{box-sizing:border-box}
+html{overflow-x:hidden;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+body::before{content:"";position:fixed;inset:-40px;z-index:-1;pointer-events:none;background-image:radial-gradient(rgba(8,102,255,.13) 1.4px,transparent 1.5px);background-size:22px 22px;animation:drift 28s linear infinite}
+@keyframes drift{to{transform:translate(22px,22px)}}
+[hidden]{display:none!important}
+a{color:inherit}
+button{font:inherit;color:inherit}
+kbd{font:600 11px/1 Plex,monospace;border:1.5px solid currentColor;border-radius:4px;padding:2px 5px 1px;margin-left:8px;opacity:.85}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.k{font:600 11.5px/1.2 Plex,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:0}
+.eb{font:600 12px/1 Plex,monospace;letter-spacing:.1em;text-transform:uppercase;margin:0 0 14px;color:var(--blue)}
+h2{font:400 clamp(30px,4.2vw,54px)/.95 Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.3px;margin:0 0 22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:12px 18px;border:2px solid var(--ink);border-radius:12px;background:var(--card);font:800 14.5px/1 Inter,sans-serif;cursor:pointer;text-decoration:none;box-shadow:3px 3px 0 var(--ink);transition:transform .12s,box-shadow .12s,background .15s;color:var(--ink)}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn.blue{background:var(--blue);color:#fff}
+.btn.sm{min-height:42px;padding:10px 14px;font-size:13px}
+
+/* loader */
+.load{position:fixed;inset:0;z-index:60;background:var(--paper);display:grid;place-items:center;transition:opacity .35s ease,visibility .35s}
+html:not(.js) .load{display:none}
+html.loaded .load{opacity:0;visibility:hidden}
+html.loading{overflow:hidden}
+.load-in{display:grid;gap:22px;justify-items:center}
+.load img{width:92px;height:92px;animation:bob .5s steps(2,end) infinite alternate}
+@keyframes bob{to{transform:translateY(-8px) rotate(-4deg)}}
+.lbar{width:220px;height:16px;border:2.5px solid var(--ink);border-radius:999px;overflow:hidden;background:var(--card)}
+.lbar i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,var(--ink) 0 2px,transparent 2px 7px);border-right:2.5px solid var(--ink)}
+
+/* anti-scam strip + nav */
+.scam{background:var(--ink);color:var(--paper);font:600 12.5px/1.35 Plex,monospace;padding:9px 20px;text-align:center;letter-spacing:.02em}
+.scam code{font:inherit;color:#9cc0ff;word-break:break-all}
+.scam button{background:var(--blue);color:#fff;border:0;border-radius:999px;padding:3px 10px;margin-left:8px;cursor:pointer;font:600 11px/1.4 Plex,monospace}
+.nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1.5px solid var(--line);background:var(--paper);position:sticky;top:0;z-index:30}
+.nav .links{display:flex;gap:4px;justify-content:center;padding:10px 12px}
+.nav a{font:600 12.5px/1 Plex,monospace;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;padding:8px 12px;border-radius:999px;border:1.5px solid transparent;transition:background .15s,border-color .15s}
+.nav a:hover{border-color:var(--ink)}
+.nav a.on{background:var(--ink);color:var(--paper)}
+.nav .xr{justify-self:end;padding-right:20px}
+section[id],main[id]{scroll-margin-top:56px}
+
+/* ---------- the office ---------- */
+.hq{border-bottom:1.5px solid var(--line)}
+.world{position:relative;height:calc(100vh - 94px);min-height:600px;max-height:980px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none}
+.world-gl{position:absolute;inset:0;display:block;cursor:pointer}
+.hud{position:absolute;z-index:3;pointer-events:none}
+.hud .btn,.hud button,.hud a,.hud ol{pointer-events:auto}
+.tl{left:26px;top:22px}
+.hero{margin:0;font:400 clamp(44px,5.2vw,82px)/.86 Anton,Impact,sans-serif;text-transform:uppercase;text-shadow:3px 3px 0 var(--paper),-2px -2px 0 var(--paper),2px -2px 0 var(--paper),-2px 2px 0 var(--paper)}
+.hero b{font-weight:400;color:var(--blue)}
+.tl .k{margin-top:12px;background:var(--ink);color:var(--paper);display:inline-block;padding:6px 10px;border-radius:999px}
+.tr{right:22px;top:22px;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.osd{font:600 11.5px/1 Plex,monospace;letter-spacing:.08em;display:flex;align-items:center;gap:8px;background:var(--card);border:1.5px solid var(--ink);border-radius:999px;padding:7px 11px}
+.rec{width:9px;height:9px;border-radius:50%;background:#e0321c;animation:blink 1.2s steps(2,end) infinite}
+@keyframes blink{50%{opacity:0}}
+.chip{display:flex;align-items:baseline;gap:10px;background:var(--navy);color:#fff;border:2px solid var(--ink);border-radius:14px;padding:10px 14px 8px;box-shadow:3px 3px 0 var(--ink)}
+.chip .k{color:#8fb5ff}
+.chip b{font:400 34px/1 Anton,Impact,sans-serif}
+.cnote{max-width:230px;text-align:right;font:600 11.5px/1.35 Inter;color:var(--ink2);margin:0;background:rgba(243,239,230,.9);padding:4px 8px;border-radius:8px}
+.logbox{right:22px;bottom:22px;width:290px;background:rgba(251,249,243,.94);border:2px solid var(--ink);border-radius:16px;padding:14px 16px 12px;box-shadow:4px 4px 0 var(--ink)}
+.log{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;max-height:210px;overflow:auto}
+.log li{display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;font:600 13px/1.35 Inter;animation:rowin .3s ease}
+.log time{font:400 11px/1.6 Plex,monospace;color:var(--mute)}
+.log li.them span{color:var(--blue)}
+.log li.you span{color:var(--mute)}
+@keyframes rowin{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+.bl{left:26px;bottom:24px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.tag{font:600 12px/1 Plex,monospace;background:var(--ink);color:var(--paper);padding:8px 12px;border-radius:999px;white-space:nowrap;transition:background .2s}
+.tag.hot{background:var(--blue)}
+.keys{font:600 11px/1.3 Plex,monospace;letter-spacing:.04em;color:var(--ink2);background:rgba(243,239,230,.9);padding:5px 8px;border-radius:8px}
+.ctrls{left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:8px;flex-wrap:nowrap}
+.ctrls .btn{min-height:44px;padding:10px 13px;font-size:13.5px}
+.prompt{left:50%;bottom:84px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:var(--blue);color:#fff;border:2px solid var(--ink);border-radius:999px;padding:8px 16px 8px 8px;font:800 14px/1 Inter;box-shadow:3px 3px 0 var(--ink);pointer-events:auto;cursor:pointer;animation:pop .25s cubic-bezier(.2,1.4,.4,1)}
+.prompt kbd{margin:0;background:#fff;color:var(--ink);border-color:var(--ink);opacity:1;padding:4px 7px 3px;font-size:12px}
+@keyframes pop{from{transform:translateX(-50%) translateY(8px) scale(.94);opacity:0}}
+.bubble{position:absolute;left:0;top:0;z-index:4;max-width:270px;background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:10px 14px;font:600 14px/1.35 Inter;box-shadow:3px 3px 0 var(--ink);pointer-events:none;will-change:transform}
+.bubble.them{background:#dfe9ff}
+.bubble::after{content:"";position:absolute;left:var(--tx,50%);bottom:-11px;width:16px;height:16px;background:inherit;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:translateX(-50%) rotate(45deg)}
+.stick{display:none;left:22px;bottom:92px;width:112px;height:112px;border-radius:50%;border:2px solid var(--ink);background:rgba(251,249,243,.85);pointer-events:auto;touch-action:none}
+.stick i{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:var(--blue);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.world-fallback{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:40px;font:600 15px/1.5 Inter}
+
+/* ---------- badge modal ---------- */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(17,17,20,.55);display:grid;place-items:center;padding:20px;overflow:auto}
+.sheetwrap{position:relative;width:min(640px,100%);background:var(--paper);border:2px solid var(--ink);border-radius:20px;padding:26px 26px 24px;box-shadow:8px 8px 0 var(--ink);animation:pop2 .35s cubic-bezier(.2,1.4,.4,1);max-height:calc(100vh - 40px);overflow:auto}
+@keyframes pop2{from{transform:translateY(14px) scale(.96);opacity:0}}
+.x{position:absolute;right:14px;top:14px;width:40px;height:40px;border-radius:50%;border:2px solid var(--ink);background:var(--card);font:800 20px/1 Inter;cursor:pointer}
+.sheetwrap h2{font-size:clamp(28px,4vw,40px);margin-bottom:16px;padding-right:44px}
+.yf{display:flex;gap:10px}
+.yf input{flex:1;min-width:0;height:54px;border:2px solid var(--ink);border-radius:12px;background:var(--card);padding:0 16px;font:400 30px/1 Anton,Impact,sans-serif;letter-spacing:4px;color:var(--ink);outline:none;transition:box-shadow .15s}
+.yf input::placeholder{color:#b9b4a8}
+.yf input:focus{box-shadow:4px 4px 0 var(--blue)}
+.yf .btn{min-height:54px}
+.err{margin:12px 0 0;font:600 13.5px/1.4 Inter;color:#c2361f}
+.locked{margin-top:18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.locked span{display:flex;align-items:center;gap:8px;border:1.5px dashed rgba(17,17,20,.4);border-radius:10px;padding:9px 10px;font:600 11px/1.2 Plex,monospace;text-transform:uppercase;letter-spacing:.04em;color:var(--ink2);min-width:0}
+.card{margin-top:18px;background:var(--card);border:2px solid var(--ink);border-radius:16px;overflow:hidden;position:relative;box-shadow:5px 5px 0 var(--ink);animation:pop2 .45s cubic-bezier(.2,1.4,.4,1)}
+.card .band{display:flex;justify-content:space-between;align-items:center;background:var(--blue);color:#fff;padding:10px 14px;border-bottom:2px solid var(--ink)}
+.card .band .k{color:#fff}
+.card .in{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px}
+.card .pic{border:2px solid var(--ink);border-radius:12px;overflow:hidden;background:var(--paper);aspect-ratio:1;align-self:start}
+.card .pic img{display:block;width:100%;height:100%;object-fit:cover}
+.card .role{margin:10px 0 0;font:400 22px/1 Anton,Impact,sans-serif;color:var(--blue);text-transform:uppercase}
+.card .rline{margin:6px 0 0;font:600 12.5px/1.35 Inter}
+.card dl{margin:0}
+.card .row{display:grid;grid-template-columns:minmax(0,112px) minmax(0,1fr);gap:10px;padding:5px 0;border-bottom:1px solid var(--hair);opacity:0;animation:rowin .3s ease forwards}
+.card dt{font:600 10.5px/1.3 Plex,monospace;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);padding-top:2px}
+.card dd{margin:0;font:600 13.5px/1.35 Inter;overflow-wrap:anywhere}
+.stamp{margin:0;padding:8px 14px 10px;border-top:1.5px dashed var(--hair);font:600 10px/1.3 Plex,monospace;letter-spacing:.06em;color:var(--mute)}
+.seal{position:absolute;right:14px;bottom:30px;border:3px solid var(--blue);color:var(--blue);border-radius:10px;padding:4px 10px 2px;font:400 30px/1 Anton,Impact,sans-serif;transform:rotate(-12deg);opacity:.85;mix-blend-mode:multiply;pointer-events:none;animation:stampin .35s .45s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes stampin{from{transform:rotate(-12deg) scale(1.8);opacity:0}}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+
+/* ---------- marquee + bands ---------- */
+.tape{background:var(--blue);color:#fff;border-bottom:1.5px solid var(--line);overflow:hidden;white-space:nowrap;padding:14px 0}
+.tapein{display:inline-flex;animation:tape 46s linear infinite}
+.tapein span{font:400 30px/1 Anton,Impact,sans-serif;text-transform:uppercase;margin-right:34px;display:inline-flex;align-items:center;gap:34px}
+.tapein span::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--paper);display:inline-block}
+@keyframes tape{to{transform:translateX(-50%)}}
+.sec{border-bottom:1.5px solid var(--line);padding-top:84px;padding-bottom:88px}
+.sec.dim{background:rgba(235,229,216,.85)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:32px;padding-right:32px}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:2px solid var(--ink);border-radius:18px;overflow:hidden;background:var(--card)}
+.facts div{padding:22px 22px 24px;border-right:1.5px solid var(--ink);min-width:0}
+.facts div:last-child{border-right:0}
+.facts div:nth-child(3){background:var(--blue);color:#fff}
+.facts div:nth-child(3) .k{color:#dbe7ff}
+.facts b{display:block;font:400 clamp(26px,2.6vw,38px)/1 Anton,Impact,sans-serif;text-transform:uppercase;margin-top:12px;overflow-wrap:anywhere}
+.why{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;margin-top:40px;align-items:start}
+.why p{margin:0 0 12px;font-size:17px;line-height:1.55;max-width:60ch}
+.ca{display:flex;flex-wrap:wrap;align-items:center;gap:10px;border:2px solid var(--ink);border-radius:14px;padding:12px 12px 12px 16px;background:var(--card)}
+.ca code{font:600 13px/1.4 Plex,monospace;overflow-wrap:anywhere;flex:1;min-width:0}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.step{background:var(--card);border:2px solid var(--ink);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0;box-shadow:5px 5px 0 var(--ink)}
+.step:nth-child(2){background:#dfe9ff}
+.step .n{font:400 58px/1 Anton,Impact,sans-serif;color:var(--blue)}
+.step h3{margin:0;font:800 19px/1.25 Inter}
+.step p{margin:0;color:var(--ink2);font-size:14.5px}
+.step .btn{align-self:flex-start;margin-top:auto}
+.step .live{font:400 44px/1 Anton,Impact,sans-serif;margin-top:auto}
+.rooms{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:26px}
+.rooms button{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:14px 12px;text-align:left;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:transform .12s,box-shadow .12s;min-width:0}
+.rooms button:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.rooms b{display:block;font:800 14px/1.25 Inter}
+.rooms span{display:block;font:600 11px/1.3 Plex,monospace;color:var(--mute);margin-top:6px;text-transform:uppercase;letter-spacing:.04em}
+.inkband{background:var(--ink);color:var(--paper)}
+.inkband .eb{color:#8fb5ff}
+.honest{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px}
+.honest li{border-top:1.5px solid rgba(243,239,230,.25);padding:18px 0 20px}
+.honest b{display:block;font:400 22px/1.1 Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;color:#fff}
+.honest span{color:#d9d4c9;font-size:15px;max-width:60ch;display:block}
+.faq{max-width:860px}
+.faq details{border-top:1.5px solid var(--ink)}
+.faq details:last-child{border-bottom:1.5px solid var(--ink)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;align-items:center;padding:20px 0;font:800 18px/1.3 Inter}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:400 30px/1 Anton,Impact,sans-serif;transition:transform .2s;flex:none}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0 0 22px;max-width:68ch;color:var(--ink2);font-size:15.5px}
+.patch{list-style:none;margin:0;padding:0;font:400 14px/1.5 Plex,monospace;max-width:860px}
+.patch li{display:grid;grid-template-columns:130px minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px dashed rgba(17,17,20,.35)}
+.patch li b{font-weight:600;color:var(--blue)}
+.patch li.ki b{color:#c2361f}
+.rv{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.rv.vis{opacity:1;transform:none}
+html:not(.js) .rv{opacity:1;transform:none}
+
+@media (max-width:980px){
+  .logbox{display:none}
+  .rooms{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .world{height:calc(100svh - 110px);min-height:560px}
+  .tl{left:16px;top:14px}
+  .hero{font-size:40px}
+  .tl .k{font-size:9.5px;margin-top:8px}
+  .tr{right:12px;top:14px;gap:8px}
+  .osd .cam{display:none}
+  .osd{padding:5px 8px;font-size:10px}
+  .chip{padding:7px 10px 6px}
+  .chip b{font-size:24px}
+  .chip .k{font-size:9.5px}
+  .cnote{display:none}
+  .bl{left:14px;bottom:auto;top:132px}
+  .tag{font-size:10.5px;padding:6px 9px}
+  .keys{display:none}
+  .stick{display:block;bottom:84px;left:16px;width:104px;height:104px}
+  .ctrls{bottom:14px;gap:5px;width:calc(100% - 20px);justify-content:center}
+  .ctrls .btn{min-height:40px;padding:8px 8px;font-size:12px;flex:1 1 0;min-width:0}
+  .ctrls kbd{display:none}
+  .prompt{bottom:auto;top:auto;left:auto;right:14px;transform:none;bottom:100px;font-size:13px;padding:8px 12px 8px 8px}
+  @keyframes pop{from{transform:translateY(8px) scale(.94);opacity:0}}
+  .wrap{padding-left:20px;padding-right:20px}
+  .sec{padding-top:58px;padding-bottom:62px}
+  .facts{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .facts div:nth-child(2){border-right:0}
+  .facts div:nth-child(-n+2){border-bottom:1.5px solid var(--ink)}
+  .why,.steps,.honest{grid-template-columns:minmax(0,1fr)}
+  .rooms{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .patch li{grid-template-columns:minmax(0,1fr);gap:2px}
+  .nav .links{gap:0;padding:8px 6px}
+  .nav a{padding:8px 9px;font-size:11.5px}
+  .nav .xr{display:none}
+  .tapein span{font-size:24px}
+  .sheetwrap{padding:20px 18px 18px}
+  .card .in{grid-template-columns:minmax(0,1fr)}
+  .card .pic{width:120px}
+}
+@media (prefers-reduced-motion:reduce){
+  body::before,.tapein,.rec,.load img{animation:none}
+  .rv{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="load" aria-hidden="true"><div class="load-in"><img src="/assets/img/favicon.svg" alt=""><div class="lbar"><i id="lbar"></i></div></div></div>
+
+<div class="scam" id="scam">$UNC doesn't exist yet. Anyone posting a CA before it appears on this page is scamming you.</div>
+
+<nav class="nav" aria-label="Sections">
+  <span></span>
+  <div class="links"><a href="#office">office</a><a href="#coin">coin</a><a href="#how">how</a><a href="#honest">honest</a><a href="#faq">faq</a></div>
+  <span class="xr"><a id="xlink" href="#" hidden target="_blank" rel="noopener">X ↗</a></span>
+</nav>
+
+<main class="hq" id="office">
+  <div class="world" id="world" aria-label="UNC HQ, a virtual office. Walk unc around.">
+    <div class="hud tl"><h1 class="hero">You're<br><b>unc</b> now.</h1><p class="k">UNC HQ · virtual office · floor 1</p></div>
+    <div class="hud tr">
+      <div class="osd"><span class="rec"></span><span class="cam">CAM 01</span><span id="clock"></span></div>
+      <div class="chip"><span class="k">Uncs badged</span><b id="count">—</b></div>
+      <p class="cnote" id="cnote">Nobody's been counted yet. A dash means no data, not zero.</p>
+    </div>
+    <aside class="hud logbox" aria-label="Dialogue log"><p class="k">Dialogue log</p><ol class="log" id="log"></ol></aside>
+    <div class="bubble" id="bubble" hidden></div>
+    <div class="hud bl"><div class="tag" id="tag">standing · back hurts</div><div class="keys">WASD walk · click to go · E use</div></div>
+    <button class="hud prompt" id="prompt" type="button" hidden><kbd>E</kbd><span id="promptText"></span></button>
+    <div class="hud stick" id="stick" aria-hidden="true"><i></i></div>
+    <div class="hud ctrls">
+      <button class="btn" type="button" data-a="talk">Talk<kbd>T</kbd></button>
+      <button class="btn" type="button" data-a="poke">Poke<kbd>P</kbd></button>
+      <button class="btn" type="button" data-a="headset">Headset<kbd>V</kbd></button>
+      <button class="btn" type="button" data-a="phone">Phone<kbd>F</kbd></button>
+      <button class="btn blue" type="button" data-a="badge">Badge<kbd>B</kbd></button>
+    </div>
+  </div>
+</main>
+<span class="sr" aria-live="polite" id="live"></span>
+
+<div class="modal" id="badge" hidden role="dialog" aria-modal="true" aria-labelledby="bt">
+  <div class="sheetwrap">
+    <button class="x" id="bx" type="button" aria-label="Close">×</button>
+    <p class="eb">01 — Your badge</p>
+    <h2 id="bt">Type the year you were born.</h2>
+    <form class="yf" id="yf" novalidate autocomplete="off">
+      <input id="year" name="year" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="YYYY" aria-label="Birth year" autocomplete="off">
+      <button class="btn blue" type="submit">Read my sheet</button>
+    </form>
+    <p class="err" id="err" role="alert" hidden></p>
+    <div class="locked" id="locked" aria-hidden="true"></div>
+    <div class="card" id="card" hidden>
+      <div class="band"><span class="k">UNC HQ · Employee badge</span><span class="k" id="ck"></span></div>
+      <div class="in">
+        <div><div class="pic"><img src="/assets/img/unc-portrait.jpg" alt="Unc, holding his phone at arm's length" width="150" height="150"></div><p class="role" id="v1"></p><p class="rline" id="v2"></p></div>
+        <dl id="rows"></dl>
+      </div>
+      <p class="stamp" id="stamp"></p>
+      <div class="seal" id="seal">UNC</div>
+    </div>
+    <div class="acts" id="acts" hidden>
+      <button class="btn sm" type="button" id="again">Another year</button>
+      <button class="btn sm" type="button" id="copy">Copy my sheet</button>
+      <button class="btn sm blue" type="button" id="post">Post it on X</button>
+    </div>
+  </div>
+</div>
+
+<div class="tape" aria-hidden="true"><div class="tapein" id="tapein"></div></div>
+
+<section class="sec" id="coin">
+  <div class="wrap">
+    <p class="eb rv">02 — The coin</p>
+    <h2 class="rv">One coin. Paired with <span style="color:var(--blue)">META</span>.</h2>
+    <div class="facts rv">
+      <div><p class="k">Chain</p><b>Robinhood Chain</b></div>
+      <div><p class="k">Launched on</p><b>Pons</b></div>
+      <div><p class="k">Paired with</p><b>META</b></div>
+      <div><p class="k">Fees</p><b>Buy META for holders</b></div>
+    </div>
+    <div class="why">
+      <div class="rv">
+        <p>Everyone's unc is on Facebook. Everyone's unc tried the metaverse once, and the headset is still on his forehead.</p>
+        <p>So $UNC is paired with META. The stock is the punchline.</p>
+      </div>
+      <div class="rv" id="carow" hidden>
+        <p class="k" style="margin-bottom:10px">Official token</p>
+        <div class="ca"><code id="cacode"></code><button class="btn sm" type="button" id="cacopy">Copy CA</button><a class="btn sm blue" id="buy" href="#" target="_blank" rel="noopener" hidden>Buy $UNC on Pons</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec dim" id="how">
+  <div class="wrap">
+    <p class="eb rv">03 — How it works</p>
+    <h2 class="rv">Walk in. Get badged.</h2>
+    <div class="steps">
+      <div class="step rv"><span class="n">1</span><h3>Walk unc to the badge kiosk.</h3><p>WASD, the arrow keys, or click the floor. On a phone, use the stick.</p><button class="btn sm blue" type="button" id="go1">Walk him there</button></div>
+      <div class="step rv"><span class="n">2</span><h3>Type the year you were born.</h3><p>Your badge reads back ten stats, all arithmetic on that year. Copy it, or post it.</p><button class="btn sm" type="button" id="go2">Open my badge</button></div>
+      <div class="step rv"><span class="n">3</span><h3>The counter adds one unc.</h3><p>It counts badges. It keeps the count and nothing else.</p><span class="live" id="count2">—</span></div>
+    </div>
+    <div class="rooms rv" id="rooms">
+      <button type="button" data-go="couch"><b>The couch</b><span>sit down · oof</span></button>
+      <button type="button" data-go="vr"><b>The metaverse</b><span>nobody's there</span></button>
+      <button type="button" data-go="colleague1"><b>Desk pod</b><span>no legs</span></button>
+      <button type="button" data-go="thermostat"><b>Thermostat</b><span>don't</span></button>
+      <button type="button" data-go="printer"><b>Printer</b><span>jammed</span></button>
+    </div>
+  </div>
+</section>
+
+<section class="sec inkband" id="honest">
+  <div class="wrap">
+    <p class="eb rv">04 — What isn't verifiable yet</p>
+    <h2 class="rv">Where you'd catch me.</h2>
+    <ul class="honest">
+      <li class="rv"><b>The token</b><span>It doesn't exist yet. There's no CA on this page, so any CA you see somewhere else isn't mine.</span></li>
+      <li class="rv"><b>The payout</b><span>Fees buy META for holders. I haven't published the split, the schedule or the wallet that does the buying. Until they're on this page, treat them as not set.</span></li>
+      <li class="rv"><b>Market hours</b><span>META is a stock. What happens to fees while its market is closed goes on this page, not in a reply.</span></li>
+      <li class="rv"><b>The buys</b><span>There haven't been any. Nothing on this page says otherwise.</span></li>
+      <li class="rv"><b>The counter</b><span>It counts badges, not people, so one person can count twice. You can't check from here what it stores. I built it to keep a number and nothing else.</span></li>
+      <li class="rv"><b>Your stats</b><span>None of them are measured. The same year in gives the same badge out, for everyone.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="faq">
+  <div class="wrap">
+    <p class="eb rv">05 — FAQ</p>
+    <h2 class="rv">The obvious questions.</h2>
+    <div class="faq rv">
+      <details><summary>How do you know my bedtime?</summary><p>I don't. Every line on the badge is arithmetic on the year you typed. Type 1996 twice and you get the same badge twice, and so does everyone else born in 1996.</p></details>
+      <details><summary>Do you keep my birth year?</summary><p>No. When a badge prints, the counter adds one. That number is all it keeps.</p></details>
+      <details><summary>How does META reach holders?</summary><p>Fees buy META for holders, and that sentence is all I've published. The split, the schedule and the wallet aren't set yet. When they are, they go on this page.</p></details>
+      <details><summary>Is this Meta's office? Does Meta know?</summary><p>No. It's a made-up virtual office I drew for unc. I'm not affiliated with Meta, and nobody there has endorsed this. META is the ticker of a tokenized stock that $UNC is paired with on Pons. The joke is about the platform: Facebook was the warning.</p></details>
+      <details><summary>Why doesn't anyone else have legs?</summary><p>It's a virtual office. Unc brought his own. His knees came with them.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec dim" id="patch">
+  <div class="wrap">
+    <p class="eb rv">06 — Patch notes</p>
+    <h2 class="rv">v1.0</h2>
+    <ul class="patch rv">
+      <li><b>added</b><span>UNC HQ. A virtual office. Walk around with WASD, the arrows, a click, or the stick.</span></li>
+      <li><b>added</b><span>The badge kiosk. Ten stats, all arithmetic on your birth year.</span></li>
+      <li><b>added</b><span>The metaverse booth. Nobody was there.</span></li>
+      <li><b>added</b><span>Three colleagues. None of them have legs.</span></li>
+      <li><b>added</b><span>The couch, the water cooler, the printer, the thermostat, and cake.</span></li>
+      <li><b>added</b><span>The unc counter. It shows a dash until the first badge prints.</span></li>
+      <li class="ki"><b>known issue</b><span>Back hurts. No fix planned.</span></li>
+      <li class="ki"><b>known issue</b><span>The printer. It's the tray. It's always the tray.</span></li>
+    </ul>
+  </div>
+</section>
+
+<script>document.documentElement.classList.add('js');</script>
+<script type="module">
+import { validate, sheet, shareText, plainText } from '/assets/js/sheet.js';
+const $ = s => document.querySelector(s);
+const C = window.CONFIG || {};
+
+// ---------- loader: real clock + backstop ----------
+const t0 = performance.now(), SPAN = 1100;
+let done = false;
+function finishLoad() { if (done) return; done = true; document.documentElement.classList.remove('loading'); document.documentElement.classList.add('loaded'); }
+(function fill() { const p = Math.min(1, (performance.now() - t0) / SPAN); $('#lbar').style.width = p * 100 + '%'; if (p < 1) requestAnimationFrame(fill); else finishLoad(); })();
+setTimeout(finishLoad, SPAN + 1000);
+
+// ---------- config rows ----------
+if (C.ca) {
+  const ca = C.ca.replace(/[^0-9a-zA-Z]/g, '');
+  $('#scam').innerHTML = `OFFICIAL TOKEN $UNC <code>${ca}</code><button type="button" id="scamcopy">Copy</button> — anything else is not ours.`;
+  $('#carow').hidden = false; $('#cacode').textContent = ca;
+  const cp = async b => { try { await navigator.clipboard.writeText(ca); const o = b.textContent; b.textContent = 'Copied'; setTimeout(() => b.textContent = o, 1500); } catch {} };
+  $('#cacopy').onclick = e => cp(e.currentTarget); $('#scamcopy').onclick = e => cp(e.currentTarget);
+  if (C.launchpad) { $('#buy').href = C.launchpad; $('#buy').hidden = false; }
+}
+if (C.x) { const a = $('#xlink'); a.href = C.x; a.hidden = false; }
+
+// ---------- marquee + clock ----------
+const SAYS = ['Is this still available?', 'My knee says rain', 'Back in my day', 'Who made the font this small', 'Happy birthday!!', "Don't touch the thermostat", "I'll be in bed by nine", 'Facebook was the warning', 'Nobody here has legs', 'Who is this on the phone'];
+$('#tapein').innerHTML = [...SAYS, ...SAYS].map(s => `<span>${s}</span>`).join('');
+const tick = () => { $('#clock').textContent = new Date().toLocaleTimeString('en-GB', { hour12: false }); };
+tick(); setInterval(tick, 1000);
+
+// ---------- log ----------
+const log = $('#log');
+function logLine(line, who) {
+  const li = document.createElement('li'); li.className = who;
+  const time = document.createElement('time'); time.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  const sp = document.createElement('span'); sp.textContent = line;
+  li.append(time, sp); log.prepend(li); while (log.children.length > 16) log.lastChild.remove();
+  $('#live').textContent = line;
+}
+function setStatus(s) { const t = $('#tag'); t.textContent = s; t.classList.toggle('hot', !/^standing/.test(s)); }
+
+// ---------- counter ----------
+let shown = null;
+function countUp(el, to) {
+  const from = Number.isFinite(shown) ? shown : Math.max(0, to - 24), t1 = performance.now();
+  (function step() { const p = Math.min(1, (performance.now() - t1) / 650), v = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))); el.textContent = v.toLocaleString('en-US'); if (p < 1) requestAnimationFrame(step); })();
+}
+let world = null;
+function showCount(j) {
+  const ok = !!(j && j.ok), n = j && Number.isFinite(j.count) ? j.count : null;
+  if (ok && n !== null) { countUp($('#count'), n); countUp($('#count2'), n); shown = n; $('#cnote').textContent = 'Uncs in training count too.'; }
+  else { $('#count').textContent = '—'; $('#count2').textContent = '—'; $('#cnote').textContent = ok ? "Nobody's been counted yet. A dash means no data, not zero." : "The counter isn't answering. Your badge still works."; }
+  world?.setFeed({ count: n, countOk: ok });
+}
+let lastCount = { ok: true, count: null };
+async function count(method = 'GET') {
+  try { const r = await fetch('/api/count', { method, cache: 'no-store' }); lastCount = await r.json(); } catch { lastCount = { ok: false, count: null }; }
+  showCount(lastCount);
+}
+count();
+
+// ---------- the badge (stat sheet) ----------
+const modal = $('#badge');
+const LOCK = '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="1.5" y="5" width="9" height="6.2" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.6 5V3.6a2.4 2.4 0 0 1 4.8 0V5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+$('#locked').innerHTML = ['Unc level', 'Bedtime', 'Knee forecast', 'Back went out', 'Font size', 'Glasses', 'Platform', 'Back in my day', 'Slang', 'Sitting down'].map(f => `<span>${LOCK}${f}</span>`).join('');
+let current = null, lastFocus = null;
+function openBadge() {
+  if (!modal.hidden) return;
+  lastFocus = document.activeElement; modal.hidden = false; document.body.style.overflow = 'hidden';
+  setTimeout(() => $('#year').focus({ preventScroll: true }), 60);
+}
+function closeBadge() { modal.hidden = true; document.body.style.overflow = ''; lastFocus?.focus?.({ preventScroll: true }); }
+$('#bx').onclick = closeBadge;
+modal.addEventListener('click', e => { if (e.target === modal) closeBadge(); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) closeBadge(); });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+$('#yf').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = validate($('#year').value);
+  if (!v.ok) { $('#err').textContent = v.msg; $('#err').hidden = false; return; }
+  $('#err').hidden = true;
+  const s = current = sheet(v.Y);
+  $('#ck').textContent = `No. ${s.Y}`;
+  $('#rows').innerHTML = s.rows.map(([k, val], i) => `<div class="row" style="animation-delay:${80 + i * 50}ms"><dt>${esc(k)}</dt><dd${k === 'Font size needed' ? ` style="font-size:${s.fontPx}px;line-height:1.15"` : ''}>${esc(val)}</dd></div>`).join('');
+  $('#v1').textContent = s.verdict[0]; $('#v2').textContent = s.verdict[1];
+  $('#seal').textContent = s.A >= 25 ? 'UNC' : 'SOON';
+  $('#stamp').textContent = `COMPUTED FROM ${s.Y}. NOTHING MEASURED.`;
+  $('#locked').hidden = true;
+  const card = $('#card'); card.hidden = true; void card.offsetWidth; card.hidden = false;
+  $('#acts').hidden = false;
+  logLine(`badge for ${s.Y}.`, 'you');
+  count('POST');
+});
+$('#again').onclick = () => { $('#card').hidden = true; $('#acts').hidden = true; $('#locked').hidden = false; $('#year').value = ''; $('#year').focus(); current = null; };
+$('#copy').onclick = async e => { if (!current) return; const b = e.currentTarget; try { await navigator.clipboard.writeText(plainText(current)); b.textContent = 'Copied'; } catch { b.textContent = 'Copy blocked'; } setTimeout(() => b.textContent = 'Copy my sheet', 1600); };
+$('#post').onclick = () => { if (!current) return; open('https://x.com/intent/post?text=' + encodeURIComponent(shareText(current, location.origin)), '_blank', 'noopener'); };
+$('#year').addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4); });
+
+// ---------- the office ----------
+const host = $('#world');
+const prompt = $('#prompt');
+const cbs = {
+  bubble: $('#bubble'),
+  onLine: (line, who) => logLine(line, who),
+  onStatus: setStatus,
+  onPrompt: p => { prompt.hidden = !p; if (p) $('#promptText').textContent = p; },
+  onBadge: () => setTimeout(openBadge, 350),
+  inputBlocked: () => !modal.hidden || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName),
+};
+Promise.all([document.fonts.load('40px Anton'), document.fonts.load('600 20px Plex'), document.fonts.load('800 20px Inter')]).catch(() => {})
+  .then(() => import('/assets/js/world.js'))
+  .then(({ mountWorld }) => {
+    world = mountWorld(host, cbs);
+    world.setFeed({ count: lastCount.count, countOk: lastCount.ok, ca: C.ca || '' });
+    setTimeout(() => world.talk(), SPAN + 400);
+  })
+  .catch(() => { const d = document.createElement('div'); d.className = 'world-fallback'; d.textContent = "The office needs WebGL, and this browser didn't give it. The badge still works."; host.append(d); });
+prompt.onclick = () => world?.interact();
+document.querySelectorAll('.ctrls [data-a]').forEach(b => b.addEventListener('click', () => {
+  if (b.dataset.a === 'badge') { openBadge(); return; }
+  world?.[b.dataset.a]();
+}));
+// virtual stick (phones)
+const stick = $('#stick'), knob = stick.querySelector('i');
+let sid = null;
+function stickMove(e) {
+  const r = stick.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, R = r.width / 2 - 12;
+  let dx = e.clientX - cx, dy = e.clientY - cy; const d = Math.hypot(dx, dy); if (d > R) { dx *= R / d; dy *= R / d; }
+  knob.style.transform = `translate(${dx}px,${dy}px)`; world?.setStick(dx / R, dy / R);
+}
+stick.addEventListener('pointerdown', e => { sid = e.pointerId; stick.setPointerCapture(sid); stickMove(e); });
+stick.addEventListener('pointermove', e => { if (e.pointerId === sid) stickMove(e); });
+const stickEnd = () => { sid = null; knob.style.transform = ''; world?.setStick(0, 0); };
+stick.addEventListener('pointerup', stickEnd); stick.addEventListener('pointercancel', stickEnd);
+
+const toOffice = (then) => { $('#office').scrollIntoView({ behavior: 'smooth' }); setTimeout(then, 550); };
+$('#go1').onclick = () => toOffice(() => world?.walkTo('kiosk'));
+$('#go2').onclick = openBadge;
+document.querySelectorAll('#rooms [data-go]').forEach(b => b.addEventListener('click', () => toOffice(() => world?.walkTo(b.dataset.go))));
+
+// ---------- reveal + scroll spy ----------
+const io = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('vis'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.rv').forEach((el, i) => { el.style.transitionDelay = (i % 4) * 60 + 'ms'; io.observe(el); });
+const sweep = () => document.querySelectorAll('.rv:not(.vis)').forEach(el => { if (el.getBoundingClientRect().top < innerHeight) el.classList.add('vis'); });
+addEventListener('scroll', sweep, { passive: true }); addEventListener('hashchange', sweep); sweep();
+const links = [...document.querySelectorAll('.nav .links a')].filter(a => a.getAttribute('href').startsWith('#'));
+function spy() { let cur = links[0]; for (const a of links) { const t = document.querySelector(a.getAttribute('href')); if (t && t.getBoundingClientRect().top <= 90) cur = a; } links.forEach(a => a.classList.toggle('on', a === cur)); }
+addEventListener('scroll', spy, { passive: true }); spy();
+</script>
+</body>
+</html>
