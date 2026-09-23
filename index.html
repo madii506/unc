@@ -346,7 +346,9 @@ const cbs = {
 let inside = false, intro = null;
 const worldMod = Promise.all([document.fonts.load('40px Anton'), document.fonts.load('600 20px Plex'), document.fonts.load('800 20px Inter')]).catch(() => {}).then(() => import('/assets/v2/world.js'));
 function fail() { const d = document.createElement('div'); d.className = 'fallback'; d.textContent = "The office needs WebGL and this browser didn't give it. Your badge still works: press Badge."; document.body.append(d); }
+let building = false;
 async function buildOffice() {
+  if (building) return; building = true;
   try {
     const { mountWorld } = await worldMod;
     world = mountWorld($('#world'), cbs); world.setFeed({ count: lastCount.count, countOk: lastCount.ok, ca: C.ca || '' });
@@ -362,7 +364,6 @@ function enterOffice() {
 import('/assets/v2/intro.js')
   .then(({ playIntro }) => { intro = playIntro($('#intro'), { onFill: buildOffice, onDone: enterOffice }); })
   .catch(() => { $('#intro')?.remove(); intro = null; buildOffice(); });
-setTimeout(() => { if (!inside) { $('#intro')?.remove(); if (!world) buildOffice(); else enterOffice(); } }, 15000);
 
 addEventListener('keydown', e => {
   if (!inside || anyOpen() || e.metaKey || e.ctrlKey || e.altKey || /^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName)) return;
