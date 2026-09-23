@@ -40,7 +40,7 @@ function feedDraw(state) {
     g.fillStyle = BLUE; g.fillRect(0, 0, w, 86);
     g.fillStyle = '#fff'; g.font = FONT_D(58); g.textBaseline = 'middle'; g.fillText('THE FEED', 34, 46);
     g.font = FONT_M(24); g.textAlign = 'right'; g.fillText(state.countOk === false ? '○ COUNTER QUIET' : '● ON', w - 34, 46); g.textAlign = 'left';
-    const rows = [['$UNC', 'Robinhood Chain · Pons'], ['PAIRED WITH', 'META'], ['FEES', 'buy META for holders'], ['CA', state.ca || 'soon']];
+    const rows = [['$UNC', 'Solana · pump.fun'], ['THE STOCK', 'META'], ['FEES', 'buy META for holders'], ['CA', state.ca || 'soon']];
     rows.forEach(([k, v], i) => {
       const y = 140 + i * 62;
       g.fillStyle = '#8fb5ff'; g.font = FONT_M(22); g.fillText(k, 34, y);
@@ -142,18 +142,40 @@ export function buildOffice(scene) {
   const corkP = signPlane(cork, 2.1, 1.56, [-1.4, 1.7, Z0 + 0.04]); root.add(corkP);
   item({ id: 'cork', prompt: 'Check Marketplace', at: [-1.4, -4.0], r: 1.3, stand: [-1.4, -3.8], face: Math.PI, group: corkP });
 
-  // ---- window with weather (back right)
-  const win = canvasTex(500, 400, (g, w, h) => {
-    g.fillStyle = '#bcd4ff'; g.fillRect(0, 0, w, h);
-    g.fillStyle = '#fff'; g.strokeStyle = INK; g.lineWidth = 5;
-    const cloud = (x, y, s) => { g.beginPath(); g.arc(x, y, 34 * s, Math.PI, 0); g.arc(x + 44 * s, y - 12 * s, 40 * s, Math.PI, 0); g.arc(x + 92 * s, y, 30 * s, Math.PI, 0); g.closePath(); g.fill(); g.stroke(); };
-    cloud(70, 150, 1.1); cloud(260, 260, 0.9);
-    g.strokeStyle = '#3a5fb0'; g.lineWidth = 4;
-    for (let i = 0; i < 16; i++) { const x = 40 + (i * 53) % 440, y = 190 + (i * 37) % 170; g.beginPath(); g.moveTo(x, y); g.lineTo(x - 10, y + 26); g.stroke(); }
-    g.fillStyle = INK; g.fillRect(w / 2 - 6, 0, 12, h); g.fillRect(0, h / 2 - 6, w, 12);
+  // ---- the elevator you arrive in (back wall, right)
+  const elev = new THREE.Group(); elev.position.set(4.35, 0, Z0 + 0.02); root.add(elev);
+  elev.add(box(1.9, 2.55, 0.14, C.ink, [0, 1.275, 0.02], 0.03));
+  elev.add(box(1.5, 2.3, 0.06, 0x2a2d36, [0, 1.15, 0.04], 0.01, { t1: -2 }));
+  const doorL = box(0.74, 2.26, 0.06, C.grey, [-0.375, 1.14, 0.1], 0.012); elev.add(doorL);
+  const doorR = box(0.74, 2.26, 0.06, C.grey, [0.375, 1.14, 0.1], 0.012); elev.add(doorR);
+  const lvlTex = canvasTex(260, 120, (g, w, h) => {
+    g.fillStyle = '#0a1f55'; g.fillRect(0, 0, w, h);
+    g.fillStyle = '#8fb5ff'; g.font = FONT_D(92); g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('▲ 1', w / 2, h / 2 + 4);
   });
-  const winP = signPlane(win, 1.9, 1.5, [5.3, 1.85, Z0 + 0.04]); root.add(winP);
-  item({ id: 'window', prompt: 'Look outside', at: [5.3, -3.9], r: 1.2, stand: [5.3, -3.75], face: Math.PI, group: winP });
+  elev.add(signPlane(lvlTex, 0.62, 0.29, [0, 2.78, 0.1]));
+  elev.userData.setOpen = k => { doorL.position.x = -0.375 - 0.72 * k; doorR.position.x = 0.375 + 0.72 * k; };
+  item({ id: 'elevator', prompt: 'Take the elevator', at: [4.35, -3.9], r: 1.1, stand: [4.35, -3.75], face: Math.PI, group: elev });
+
+  // ---- READ ME podium (first thing you pass)
+  const readme = new THREE.Group(); readme.position.set(2.75, 0, -3.05); readme.rotation.y = 0.5; root.add(readme);
+  readme.add(box(0.5, 1.0, 0.4, C.ink, [0, 0.5, 0], 0.03));
+  readme.add(box(0.62, 0.06, 0.5, C.wood, [0, 1.03, 0.02], 0.02, { rot: [0.25, 0, 0] }));
+  const rmTex = canvasTex(320, 240, (g, w, h) => {
+    g.fillStyle = BLUE; g.fillRect(0, 0, w, h);
+    g.fillStyle = '#fff'; g.font = FONT_D(88); g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('READ', w / 2, 70); g.fillText('ME', w / 2, 170);
+  });
+  const rm = new THREE.Mesh(new THREE.PlaneGeometry(0.42, 0.32), inkMat(C.paper, { map: rmTex, t1: -2 }));
+  rm.position.set(0, 1.07, 0.03); rm.rotation.x = -Math.PI / 2 + 0.25; rm.userData.noOutline = true; readme.add(rm);
+  item({ id: 'readme', prompt: 'Read the fine print', at: [2.75, -2.5], r: 0.95, stand: [2.8, -2.45], face: Math.PI + 0.5, group: readme, obstacle: { x: 2.75, z: -3.05, r: 0.36 } });
+
+  // ---- wall clock (real time)
+  const clk = new THREE.Group(); clk.position.set(-2.95, 2.45, Z0 + 0.06); root.add(clk);
+  clk.add(cyl(0.3, 0.3, 0.05, C.paper, [0, 0, 0], 32)); clk.children[0].rotation.x = Math.PI / 2;
+  const handH = box(0.035, 0.17, 0.02, C.ink, [0, 0.07, 0.04], 0.008), handM = box(0.025, 0.25, 0.02, C.ink, [0, 0.11, 0.05], 0.008);
+  const hH = new THREE.Group(); hH.position.z = 0.0; hH.add(handH); const hM = new THREE.Group(); hM.add(handM);
+  clk.add(hH, hM);
+  for (let i = 0; i < 12; i++) { const tk = box(0.02, 0.05, 0.02, C.ink, [Math.sin(i * Math.PI / 6) * 0.24, Math.cos(i * Math.PI / 6) * 0.24, 0.035], 0.005); clk.add(tk); }
+  anims.push(() => { const d = new Date(); hM.rotation.z = -(d.getMinutes() + d.getSeconds() / 60) / 60 * Math.PI * 2; hH.rotation.z = -((d.getHours() % 12) + d.getMinutes() / 60) / 12 * Math.PI * 2; });
 
   // ---- printer (back right corner)
   const printer = new THREE.Group(); printer.position.set(6.25, 0, -4.3); root.add(printer);
@@ -171,6 +193,17 @@ export function buildOffice(scene) {
   cooler.add(sph(0.2, C.blueLt, [0, 1.44, 0], [1, 0.4, 1]));
   cooler.add(box(0.08, 0.06, 0.08, C.blue, [0.26, 0.72, 0.1], 0.01));
   item({ id: 'cooler', prompt: 'Water cooler talk', at: [-5.6, -1.7], r: 1.2, stand: [-5.55, -1.7], face: -Math.PI / 2, group: cooler, obstacle: { x: -6.45, z: -1.7, r: 0.45 } });
+
+  // ---- vending machine (left wall, back)
+  const vend = new THREE.Group(); vend.position.set(-6.4, 0, -3.35); root.add(vend);
+  vend.add(box(0.75, 1.95, 0.95, C.blue, [0, 0.975, 0], 0.05));
+  const vTex = canvasTex(300, 420, (g, w, h) => {
+    g.fillStyle = '#dfe9ff'; g.fillRect(0, 0, w, h);
+    const rows = ['PRUNES', 'FIBER', 'DECAF', 'ANTACID'];
+    rows.forEach((t, i) => { g.fillStyle = INK; g.fillRect(14, 16 + i * 100, w - 28, 4); g.font = FONT_M(30); g.fillText(t, 22, 70 + i * 100); g.fillStyle = BLUE; g.fillRect(w - 70, 40 + i * 100, 40, 40); });
+  });
+  vend.add(signPlane(vTex, 0.62, 0.87, [0.385, 1.25, 0], Math.PI / 2));
+  item({ id: 'vending', prompt: 'Get a snack', at: [-5.5, -3.35], r: 1.05, stand: [-5.55, -3.35], face: -Math.PI / 2, group: vend, obstacle: { x: -6.4, z: -3.35, r: 0.4, box: [0.4, 0.5] } });
 
   // ---- thermostat (left wall)
   const thermoTex = canvasTex(240, 300, (g, w, h) => {
@@ -240,6 +273,36 @@ export function buildOffice(scene) {
   vrStand.add(box(0.29, 0.12, 0.02, C.blue, [0.95, 1.18, -0.33], 0.01));
   item({ id: 'vr', prompt: 'Enter the metaverse', at: [4.6, 3.1], r: 1.0, stand: [4.6, 3.1], face: 0, group: vrStand, obstacle: { x: 5.55, z: 2.7, r: 0.25 } });
 
+  // ---- meeting pod (front middle): round table, two legless colleagues, a whiteboard of knees
+  const meet = new THREE.Group(); meet.position.set(1.55, 0, 3.05); root.add(meet);
+  meet.add(cyl(0.62, 0.62, 0.06, C.wood, [0, 0.74, 0], 40));
+  meet.add(cyl(0.06, 0.06, 0.72, C.ink, [0, 0.36, 0], 10));
+  meet.add(cyl(0.3, 0.34, 0.04, C.ink, [0, 0.02, 0], 20));
+  meet.add(box(0.28, 0.02, 0.2, C.paper, [0.15, 0.78, 0.1], 0.006));
+  const wbTex = canvasTex(420, 300, (g, w, h) => {
+    g.fillStyle = '#fff'; g.fillRect(0, 0, w, h);
+    g.strokeStyle = INK; g.lineWidth = 5; g.beginPath(); g.moveTo(40, 30); g.lineTo(40, 250); g.lineTo(390, 250); g.stroke();
+    g.strokeStyle = BLUE; g.lineWidth = 8; g.beginPath(); g.moveTo(50, 60); g.lineTo(130, 90); g.lineTo(210, 150); g.lineTo(290, 170); g.lineTo(380, 235); g.stroke();
+    g.fillStyle = INK; g.font = FONT_D(46); g.fillText('KNEES', 240, 70);
+  });
+  const wb = new THREE.Group(); wb.position.set(2.75, 0, 3.8); wb.rotation.y = -0.9; root.add(wb);
+  wb.add(box(0.05, 1.3, 0.05, C.ink, [-0.55, 0.65, 0], 0.02)); wb.add(box(0.05, 1.3, 0.05, C.ink, [0.55, 0.65, 0], 0.02));
+  wb.add(signPlane(wbTex, 1.2, 0.86, [0, 1.3, 0.03]));
+  [[-0.95, 0.1, 1.2], [0.2, -0.95, 0.1]].forEach(([dx, dz, ry], i) => {
+    const c = colleague(i ? C.blueLt : C.grey, i ? C.ink : C.grey2); c.position.set(1.55 + dx, 1.12, 3.05 + dz); c.rotation.y = ry; root.add(c);
+    const sh = shadowBlob(0.55, 0.28); sh.position.set(1.55 + dx, 0.006, 3.05 + dz); root.add(sh);
+    colleagues.push({ g: c, phase: 3 + i });
+  });
+  item({ id: 'meeting', prompt: 'Join the meeting', at: [1.55, 3.05], r: 1.35, stand: [2.35, 3.75], face: -2.3, group: meet, obstacle: { x: 1.55, z: 3.05, r: 0.72 } });
+  obstacles.push({ x: 2.75, z: 3.8, r: 0.3 });
+
+  // ---- a colleague who floats laps around the office (no legs, no collisions)
+  const lap = colleague(C.blue, C.ink); root.add(lap);
+  const lapSh = shadowBlob(0.55, 0.28); root.add(lapSh);
+  const path = new THREE.CatmullRomCurve3([[-2.6, 1.4], [0.2, 1.3], [3.3, 1.1], [5.4, 0.6], [5.6, -2.4], [3.2, -2.6], [-0.6, -2.9], [-2.9, -1.8], [-3.3, 0.3]].map(([x, z]) => new THREE.Vector3(x, 0, z)), true);
+  const lapObj = { g: lap, phase: 5.5 }; colleagues.push(lapObj);
+  anims.push(t => { const u = (t * 0.018) % 1, p = path.getPointAt(u), q = path.getPointAt((u + 0.004) % 1); lap.position.set(p.x, 1.12, p.z); lap.rotation.y = Math.atan2(q.x - p.x, q.z - p.z); lapSh.position.set(p.x, 0.006, p.z); });
+
   // ---- plants
   for (const [x, z] of [[6.45, 4.45], [-6.45, -4.5], [6.5, -1.9]]) {
     const p = new THREE.Group(); p.position.set(x, 0, z); root.add(p);
@@ -256,7 +319,7 @@ export function buildOffice(scene) {
   }
 
   function setFeed(patch) { Object.assign(state, patch); const d = feedTex.userData; const g = d.cv.getContext('2d'); d.draw(g, d.cv.width, d.cv.height); feedTex.needsUpdate = true; }
-  function redrawSigns() { for (const t of [feedTex, kioskSign, cork, poster, vrSign, thermoTex, win]) { const d = t.userData; d.draw(d.cv.getContext('2d'), d.cv.width, d.cv.height); t.needsUpdate = true; } }
+  function redrawSigns() { for (const t of [feedTex, kioskSign, cork, poster, vrSign, thermoTex, lvlTex, rmTex, vTex, wbTex]) { const d = t.userData; d.draw(d.cv.getContext('2d'), d.cv.width, d.cv.height); t.needsUpdate = true; } }
 
-  return { root, items, obstacles, colleagues, anims, floor: floorTop, bounds: { x0: X0 + 0.45, x1: -X0 - 0.35, z0: Z0 + 0.45, z1: -Z0 - 0.35 }, setFeed, redrawSigns, printer };
+  return { root, items, obstacles, colleagues, anims, floor: floorTop, elev, lap: lapObj, bounds: { x0: X0 + 0.45, x1: -X0 - 0.35, z0: Z0 + 0.45, z1: -Z0 - 0.35 }, setFeed, redrawSigns, printer };
 }

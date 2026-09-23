@@ -28,7 +28,8 @@ export function mountWorld(host, cb = {}) {
   const me = new THREE.Group(); me.add(unc.root); scene.add(me);
   unc.root.scale.setScalar(0.92);
   const myShadow = shadowBlob(0.8, 0.42); scene.add(myShadow);
-  const pos = new THREE.Vector2(0.4, 2.6); let heading = Math.PI * 0.85, walkPhase = 0, speed01 = 0;
+  const pos = new THREE.Vector2(4.35, -4.55); let heading = 0, walkPhase = 0, speed01 = 0;
+  let entered = false, enterT = 0, introK = 0;
 
   const snap = o => o.rotation.clone();
   const base = { head: snap(P.head), neck: snap(P.neck), torso: snap(P.torso), rS: snap(P.armR.shoulder), rE: snap(P.armR.elbow), lS: snap(P.armL.shoulder), vrPos: P.vr.position.clone(), vrRot: snap(P.vr) };
@@ -38,25 +39,32 @@ export function mountWorld(host, cb = {}) {
   const OFF = new THREE.Vector3(9, 9.2, 10.5);
   const look = new THREE.Vector3(-0.2, 0.5, -0.6);
   let viewH = 7;
-  let mode = 'wide';
+  let mode = 'wide', baseViewH = 10;
+  function setView(vh) {
+    const a = host.clientWidth / host.clientHeight;
+    camera.left = -vh * a / 2; camera.right = vh * a / 2; camera.top = vh / 2; camera.bottom = -vh / 2;
+    camera.updateProjectionMatrix();
+  }
   function frame() {
     const w = host.clientWidth, h = host.clientHeight;
     renderer.setSize(w, h, false);
     renderer.domElement.style.width = w + 'px'; renderer.domElement.style.height = h + 'px';
     const a = w / h;
     mode = a > 1.15 ? 'wide' : 'follow';
-    viewH = a > 1.9 ? 10.2 : a > 1.15 ? 11.2 : 10.6;
-    camera.left = -viewH * a / 2; camera.right = viewH * a / 2; camera.top = viewH / 2; camera.bottom = -viewH / 2;
-    camera.updateProjectionMatrix();
+    baseViewH = a > 1.9 ? 10.2 : a > 1.15 ? 11.2 : 10.6;
   }
   new ResizeObserver(frame).observe(host); frame();
-  const CENTER = new THREE.Vector2(-0.2, -0.6);
+  const CENTER = new THREE.Vector2(-0.2, -0.6), ELEV = new THREE.Vector3(4.35, 0.5, -3.6);
+  const want = new THREE.Vector3();
   function placeCamera(k = 1) {
     let tx, tz;
     if (mode === 'wide') { tx = CENTER.x + (pos.x - CENTER.x) * 0.22; tz = CENTER.y + (pos.y - CENTER.y) * 0.22; }
     else { tx = THREE.MathUtils.clamp(pos.x, -4.6, 4.6); tz = THREE.MathUtils.clamp(pos.y, -3.2, 3.2) + 0.3; }
-    look.x += (tx - look.x) * k; look.z += (tz - look.z) * k;
+    const e = introK * introK * (3 - 2 * introK);
+    want.set(ELEV.x + (tx - ELEV.x) * e, 0.5, ELEV.z + (tz - ELEV.z) * e);
+    look.x += (want.x - look.x) * (introK < 1 ? 1 : k); look.z += (want.z - look.z) * (introK < 1 ? 1 : k);
     camera.position.copy(look).add(OFF); camera.lookAt(look);
+    setView(4.4 + (baseViewH - 4.4) * e);
   }
   placeCamera(1);
 
@@ -96,6 +104,10 @@ export function mountWorld(host, cb = {}) {
     cork: cyc(['is this still available?', 'lost: reading glasses. …they\'re on my shirt.', 'free couch, bad back. that couch is mine.']),
     cake: cyc(['happy birthday!! …whose is it?', 'happy birthday!! i wrote it on the wall too.', 'i only came for the cake.']),
     thermo: cyc(["don't touch the thermostat.", 'who touched the thermostat.', 'it says locked. good.']),
+    elev: cyc(['going down? nah. i just got here.', 'the elevator music used to be better.']),
+    vend: cyc(['they\'re out of prunes.', 'decaf. again.', 'the machine ate my dollar. back in my day it gave it back.']),
+    meet: cyc(['this meeting could\'ve been an email.', 'can everyone see my screen?', 'let\'s circle back after lunch.']),
+    meetU: cyc(['i\'ll be in bed by then.', 'my knee has a hard stop at five.', 'i printed the email.']),
     feed: cyc(['fees buy META for holders. CA: soon. i\'ll wait.', 'the feed. like facebook, but it only talks about me.']),
   };
   const HI = [['hey unc. where\'d you get legs?', 'brought \'em from home.'], ['we don\'t do legs here.', 'my knees came with them.'], ['meeting in five. it\'s always in five.', "i'll be in bed by then."], ['did you see my post?', 'i liked it. twice. by accident.']];
@@ -118,17 +130,28 @@ export function mountWorld(host, cb = {}) {
     },
     interact() { const it = nearest(); if (it) use(it); },
     setStick(x, y) { stick.set(x, y); if (stick.lengthSq() > 0.02) { target = null; pendingUse = null; } },
-    walkTo(id) { const it = office.items.find(i => i.id === id); if (it) goUse(it); },
+    walkTo(id) { if (!entered) return; const it = office.items.find(i => i.id === id); if (it) goUse(it); },
+    enter() {
+      if (entered) return; entered = true; enterT = now();
+      setTimeout(() => { target = new THREE.Vector2(3.55, -2.5); pendingUse = null; arrivedHello = true; }, 750);
+      setTimeout(() => { closeDoors = true; }, 3800);
+    },
     setFeed: office.setFeed, redrawSigns: office.redrawSigns,
   };
+  let arrivedHello = false, closeDoors = false;
   const idleStatus = () => act.sit ? 'sitting · oof' : 'standing · back hurts';
   function standUp() { if (act.sit) { act.sit = false; act.sitT = now(); say('"ooooh-kay."'); pos.set(-5.35, 2.35); } }
 
   function use(it) {
     heading = it.face;
     switch (it.id) {
+      case 'readme': say('the fine print. large font, please.'); setStatus('reading the fine print'); cb.onInfo?.('coin'); break;
+      case 'elevator': say(L.elev()); setStatus('by the elevator'); break;
+      case 'vending': say(L.vend()); setStatus('at the vending machine'); break;
+      case 'meeting': { const c = office.colleagues[3].g; say(L.meet(), c.userData.head); setStatus('in a meeting'); setTimeout(() => say(L.meetU()), 1900); break; }
+      case 'lap': { const c = office.lap.g, [a, b] = HI[hiI++ % HI.length]; say(a, c.userData.head); setStatus('small talk'); setTimeout(() => say(b), 1900); break; }
       case 'kiosk': say('one badge please. large print.'); setStatus('at the badge kiosk'); cb.onBadge?.(); break;
-      case 'feed': say(L.feed()); setStatus('reading the feed'); break;
+      case 'feed': say(L.feed()); setStatus('reading the feed'); cb.onInfo?.('coin'); break;
       case 'cork': say(L.cork()); setStatus('browsing marketplace'); break;
       case 'window': say(L.window()); setStatus('looking outside · knee hurts'); break;
       case 'printer': {
@@ -158,7 +181,7 @@ export function mountWorld(host, cb = {}) {
   const keys = new Set(), stick = new THREE.Vector2();
   let target = null, pendingUse = null;
   addEventListener('keydown', e => {
-    if (e.metaKey || e.ctrlKey || e.altKey || cb.inputBlocked?.()) return;
+    if (!entered || e.metaKey || e.ctrlKey || e.altKey || cb.inputBlocked?.()) return;
     const k = e.key.toLowerCase();
     if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(k)) {
       if (!inView()) return;
@@ -172,11 +195,13 @@ export function mountWorld(host, cb = {}) {
   const inView = () => { const r = host.getBoundingClientRect(); return r.bottom > innerHeight * 0.35 && r.top < innerHeight * 0.65; };
 
   const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), hitP = new THREE.Vector3();
+  const lapItem = { id: 'lap', prompt: 'Say hi', at: [0, 0], r: 1.15, stand: [0, 0], face: 0, group: office.lap.g }; office.items.push(lapItem);
   const pickables = []; office.items.forEach(it => { if (it.group) { it.group.traverse(o => { if (o.isMesh) o.userData.item = it; }); pickables.push(it.group); } });
   let downAt = null;
   const el = renderer.domElement;
   el.addEventListener('pointerdown', e => { downAt = [e.clientX, e.clientY]; });
   el.addEventListener('pointerup', e => {
+    if (!entered) return;
     if (!downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 8) return; downAt = null;
     const r = el.getBoundingClientRect();
     ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
@@ -187,6 +212,7 @@ export function mountWorld(host, cb = {}) {
     if (ray.ray.intersectPlane(plane, hitP)) { standUp(); target = new THREE.Vector2(hitP.x, hitP.z); pendingUse = null; cb.onMoveHint?.(); }
   });
   function goUse(it) {
+    if (it.id === 'lap') { const p = office.lap.g.position; it.stand = [p.x, p.z + 0.9]; }
     if (it.id === 'couch' && act.sit) { use(it); return; }
     standUp();
     target = new THREE.Vector2(...it.stand); pendingUse = it;
@@ -224,7 +250,7 @@ export function mountWorld(host, cb = {}) {
     else if (target) {
       mx = target.x - pos.x; mz = target.y - pos.y;
       const d = Math.hypot(mx, mz);
-      if (d < Math.max(0.08, SPEED * 0.02)) { target = null; mx = mz = 0; if (pendingUse) { const it = pendingUse; pendingUse = null; use(it); } }
+      if (d < Math.max(0.08, SPEED * 0.02)) { target = null; mx = mz = 0; if (pendingUse) { const it = pendingUse; pendingUse = null; use(it); } else if (arrivedHello) { arrivedHello = false; heading = 0.6; say('facebook was the warning.'); cb.onArrive?.(); } }
     }
     const len = Math.hypot(mx, mz);
     const moving = len > 0.001 && !act.sit;
@@ -280,7 +306,11 @@ export function mountWorld(host, cb = {}) {
     raf = requestAnimationFrame(loop);
     const dt = Math.min(0.25, (ts - last) / 1000); last = ts;
     const t = ts / 1000;
-    step(dt);
+    if (entered) { introK = Math.min(1, (now() - enterT - 0.5) / 2.4); if (introK < 0) introK = 0; }
+    const lp = office.lap.g.position; lapItem.at = [lp.x, lp.z]; lapItem.face = Math.atan2(lp.x - pos.x, lp.z - pos.y);
+    const dk = !entered ? 0 : closeDoors ? Math.max(0, 1 - (now() - enterT - 3.8) / 0.8) : Math.min(1, (now() - enterT) / 0.8);
+    office.elev.userData.setOpen(dk * dk * (3 - 2 * dk));
+    if (entered) step(dt);
     office.anims.forEach(f => f(reduced ? 0 : t));
     pose(t); placeCamera(Math.min(1, dt * 4));
     renderer.render(scene, camera);
