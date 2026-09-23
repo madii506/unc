@@ -52,24 +52,19 @@ button{font:inherit;color:inherit}
 .scam button{background:var(--blue);color:#fff;border:0;border-radius:999px;padding:2px 9px;margin-left:8px;cursor:pointer;font:600 10.5px/1.4 Plex,monospace}
 .hud{position:fixed;z-index:4;pointer-events:none}
 .hud button,.hud a{pointer-events:auto}
-.mark{left:18px;top:18px;width:54px;height:54px}
-html.has-ca .mark,html.has-ca .tr{top:40px}
-.tr{right:18px;top:18px;display:flex;gap:10px;align-items:stretch}
-.chip{display:flex;flex-direction:column;justify-content:center;align-items:flex-end;background:var(--navy);color:#fff;border:2px solid var(--ink);border-radius:14px;padding:6px 12px 5px;box-shadow:3px 3px 0 var(--ink);pointer-events:auto;cursor:help}
-.chip .k{color:#8fb5ff;font-size:9.5px}
-.chip b{font:400 28px/1 Anton,Impact,sans-serif}
-.ib{width:52px;border:2px solid var(--ink);border-radius:14px;background:var(--card);box-shadow:3px 3px 0 var(--ink);cursor:pointer;display:grid;place-items:center;transition:transform .12s,box-shadow .12s}
-.ib:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
-.ctrls{left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;gap:8px}
-.ic{position:relative;width:56px;height:56px;border:2px solid var(--ink);border-radius:16px;background:var(--card);box-shadow:3px 3px 0 var(--ink);cursor:pointer;display:grid;place-items:center;transition:transform .12s,box-shadow .12s,background .15s}
-.ic:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
-.ic:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
-.ic.blue{background:var(--blue);color:#fff}
-.ic svg{width:26px;height:26px}
-.ic i{position:absolute;right:4px;bottom:3px;font:600 9.5px/1 Plex,monospace;font-style:normal;opacity:.6}
-.ic::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(4px);background:var(--ink);color:var(--paper);font:600 11.5px/1 Plex,monospace;padding:6px 9px;border-radius:8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s}
-.ic:hover::after{opacity:1;transform:translateX(-50%)}
-.prompt{left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:var(--blue);color:#fff;border:2px solid var(--ink);border-radius:999px;padding:8px 16px 8px 8px;font:800 14px/1 Inter;box-shadow:3px 3px 0 var(--ink);pointer-events:auto;cursor:pointer;animation:rise .25s cubic-bezier(.2,1.4,.4,1)}
+.bar{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:2px;background:var(--card);border:2px solid var(--ink);border-radius:999px;padding:5px 6px 5px 7px;box-shadow:3px 3px 0 var(--ink);animation:drop .5s cubic-bezier(.2,1.4,.4,1)}
+html.has-ca .bar{top:38px}
+@keyframes drop{from{transform:translateX(-50%) translateY(-30px);opacity:0}}
+.bar .bm{width:34px;height:34px;margin-right:6px;display:block}
+.bar button{position:relative;display:flex;align-items:center;gap:7px;border:0;background:none;padding:10px 12px;border-radius:999px;font:600 12px/1 Plex,monospace;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:background .15s,transform .12s}
+.bar button:hover{background:#e7e1d3}
+.bar button:active{transform:scale(.95)}
+.bar button.blue{background:var(--blue);color:#fff}
+.bar button.blue:hover{background:#0a58e0}
+.bar svg{width:18px;height:18px;flex:none}
+.bar button::after{content:attr(data-key);position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);font:600 11px/1 Plex,monospace;padding:5px 8px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s;white-space:nowrap}
+.bar button:hover::after{opacity:1}
+.prompt{left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:var(--blue);color:#fff;border:2px solid var(--ink);border-radius:999px;padding:8px 16px 8px 8px;font:800 14px/1 Inter;box-shadow:3px 3px 0 var(--ink);pointer-events:auto;cursor:pointer;animation:rise .25s cubic-bezier(.2,1.4,.4,1)}
 .prompt kbd{background:#fff;color:var(--ink);border:1.5px solid var(--ink);border-radius:5px;padding:4px 7px 3px;font:600 12px/1 Plex,monospace}
 @keyframes rise{from{opacity:0;margin-bottom:-8px}}
 .hint{left:50%;top:44%;transform:translate(-50%,-50%);background:rgba(17,17,20,.86);color:var(--paper);font:600 13px/1.3 Plex,monospace;padding:10px 14px;border-radius:12px;transition:opacity .6s}
@@ -77,31 +72,34 @@ html.has-ca .mark,html.has-ca .tr{top:40px}
 .bubble{position:fixed;left:0;top:0;z-index:3;max-width:270px;background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:10px 14px;font:600 14px/1.35 Inter;box-shadow:3px 3px 0 var(--ink);pointer-events:none;will-change:transform}
 .bubble.them{background:#dfe9ff}
 .bubble::after{content:"";position:absolute;left:var(--tx,50%);bottom:-11px;width:16px;height:16px;background:inherit;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:translateX(-50%) rotate(45deg)}
-.stick{display:none;left:16px;bottom:calc(90px + env(safe-area-inset-bottom));width:108px;height:108px;border-radius:50%;border:2px solid var(--ink);background:rgba(251,249,243,.85);pointer-events:auto;touch-action:none}
+.stick{display:none;left:16px;bottom:calc(24px + env(safe-area-inset-bottom));width:108px;height:108px;border-radius:50%;border:2px solid var(--ink);background:rgba(251,249,243,.85);pointer-events:auto;touch-action:none}
 .stick i{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:var(--blue);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
 .fallback{position:fixed;inset:0;z-index:2;display:grid;place-items:center;text-align:center;padding:40px;font:600 15px/1.5 Inter}
 
-/* ---------- the door (entry) ---------- */
-.gate{position:fixed;inset:0;z-index:20;background:var(--paper);display:grid;place-items:center;transition:opacity .7s ease .5s,visibility .7s .5s}
-.gate::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(8,102,255,.14) 1.4px,transparent 1.5px);background-size:22px 22px}
-.gate.open{opacity:0;visibility:hidden;pointer-events:none}
-.gin{position:relative;display:grid;justify-items:center;gap:26px;padding:24px}
-.gate h1{margin:0;font:400 clamp(54px,9vw,128px)/.86 Anton,Impact,sans-serif;text-transform:uppercase;text-align:center}
-.gate h1 b{font-weight:400;color:var(--blue)}
-.dwrap{position:relative;padding-top:52px}
-.lvl{position:absolute;left:50%;top:0;transform:translateX(-50%);background:var(--navy);color:#8fb5ff;border:3px solid var(--ink);border-radius:10px;padding:6px 14px 4px;font:400 26px/1 Anton,Impact,sans-serif;letter-spacing:1px;white-space:nowrap}
-.door{position:relative;width:min(260px,56vw);aspect-ratio:3/3.4;border:4px solid var(--ink);border-radius:12px 12px 0 0;background:#2a2d36;overflow:hidden;box-shadow:8px 8px 0 var(--ink)}
-.door i{position:absolute;top:0;bottom:0;width:50%;background:repeating-linear-gradient(90deg,#b4b7bd 0 2px,#c3c6cb 2px 14px);border:2.5px solid var(--ink);transition:transform .9s cubic-bezier(.7,0,.3,1)}
-.door i:first-child{left:0}
-.door i:last-child{right:0}
-.gate.open .door i:first-child{transform:translateX(-100%)}
-.gate.open .door i:last-child{transform:translateX(100%)}
-.enter{min-height:64px;padding:16px 42px;font-size:20px;border-radius:16px;box-shadow:5px 5px 0 var(--ink);letter-spacing:.06em;text-transform:uppercase}
-.gate .scamg{position:absolute;left:0;right:0;bottom:0;background:var(--ink);color:var(--paper);font:600 11.5px/1.35 Plex,monospace;padding:9px 16px;text-align:center}
-.loadbar{width:160px;height:10px;border:2px solid var(--ink);border-radius:999px;overflow:hidden;background:var(--card)}
-.loadbar i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,var(--ink) 0 2px,transparent 2px 7px);transition:width .3s}
-html.ready .loadbar{display:none}
-html:not(.ready) .enter{opacity:.45;pointer-events:none}
+/* ---------- the intro (4.6s) ---------- */
+.intro{position:fixed;inset:0;z-index:40;background:var(--navy);overflow:hidden;cursor:pointer;transition:opacity .6s ease,background .12s}
+.intro.blue{background:var(--blue)}
+.intro.out{opacity:0;pointer-events:none}
+.intro .lines{position:absolute;left:50%;top:50%;width:250vmax;height:250vmax;margin:-125vmax 0 0 -125vmax;background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.13) 0 3deg,transparent 3deg 11deg);animation:spin 5s linear infinite}
+.intro .dots{position:absolute;inset:-40px;background-image:radial-gradient(rgba(255,255,255,.16) 1.6px,transparent 1.7px);background-size:18px 18px;animation:drift 6s linear infinite}
+.intro .ring{position:absolute;left:50%;top:66%;width:10px;height:10px;margin:-5px 0 0 -5px;border:8px solid #fff;border-radius:50%;opacity:0}
+.intro.ring .ring{animation:ring .9s cubic-bezier(.1,.7,.3,1) forwards}
+.intro .i3d{position:absolute;inset:0}
+.intro .i3d canvas{display:block}
+.intro .gl{position:absolute;inset:0;opacity:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.0) 0 18px,rgba(255,255,255,.35) 18px 22px,rgba(17,17,20,.25) 22px 26px);mix-blend-mode:overlay}
+.intro.glitch .gl{opacity:1;animation:glitch .18s steps(3) infinite}
+.intro .fl{position:absolute;inset:0;background:#fff;opacity:0;transition:opacity .08s}
+.intro.flash .fl{opacity:.9}
+.intro .fill{position:absolute;inset:0;background:var(--blue);opacity:0;transition:opacity .3s}
+.intro.fill .fill{opacity:1}
+.intro .fill{display:grid;place-items:center}
+.intro .fill img{width:96px;height:96px;animation:bob .5s steps(2,end) infinite alternate;filter:drop-shadow(4px 4px 0 #111114)}
+@keyframes bob{to{transform:translateY(-8px) rotate(-5deg)}}
+.intro.shake .i3d{animation:shake .35s steps(6)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes ring{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(160)}}
+@keyframes glitch{0%{transform:translateY(0)}50%{transform:translateY(9px)}100%{transform:translateY(-6px)}}
+@keyframes shake{0%{transform:translate(0,0)}20%{transform:translate(-12px,8px)}40%{transform:translate(10px,-6px)}60%{transform:translate(-8px,-4px)}80%{transform:translate(6px,6px)}100%{transform:translate(0,0)}}
 
 /* ---------- modals ---------- */
 .modal{position:fixed;inset:0;z-index:30;background:rgba(17,17,20,.55);display:grid;place-items:center;padding:16px;overflow:auto}
@@ -159,55 +157,42 @@ html:not(.ready) .enter{opacity:.45;pointer-events:none}
 .faq details p{margin:0 0 16px;color:var(--ink2);font-size:14.5px}
 
 @media (max-width:760px){
-  .mark{left:12px;top:14px;width:44px;height:44px}
-  .tr{right:12px;top:14px;gap:8px}
-  html.has-ca .mark,html.has-ca .tr{top:36px}
-  .chip b{font-size:22px}
-  .ib{width:44px}
+  .bar{top:10px;padding:4px 5px}
+  html.has-ca .bar{top:34px}
+  .bar .bm{width:30px;height:30px;margin-right:2px}
+  .bar button{padding:9px 9px}
+  .bar button span{display:none}
+  .bar button::after{display:none}
   .stick{display:block}
-  .ctrls{gap:6px}
-  .ic{width:48px;height:48px;border-radius:14px}
-  .ic svg{width:22px;height:22px}
-  .ic i,.ic::after{display:none}
-  .prompt{left:auto;right:14px;transform:none;bottom:calc(92px + env(safe-area-inset-bottom));font-size:13px;padding:8px 12px 8px 8px}
+  .prompt{left:auto;right:14px;transform:none;bottom:calc(40px + env(safe-area-inset-bottom));font-size:13px;padding:8px 12px 8px 8px}
   .hint{font-size:12px;width:max-content;max-width:86vw;text-align:center}
   .card .in{grid-template-columns:minmax(0,1fr)}
   .card .pic{width:120px}
   .sheetwrap{padding:20px 16px 18px}
   .scam{font-size:10px;padding:5px 10px}
 }
-@media (prefers-reduced-motion:reduce){ body::before{animation:none} .door i{transition:none} }
+@media (prefers-reduced-motion:reduce){ body::before,.intro .lines,.intro .dots{animation:none} }
 </style>
 </head>
 <body>
-<!-- the door you walk through -->
-<div class="gate" id="gate">
-  <div class="gin">
-    <div class="dwrap"><span class="lvl">UNC HQ</span><div class="door" aria-hidden="true"><i></i><i></i></div></div>
-    <div class="loadbar" aria-hidden="true"><i id="lbar"></i></div>
-    <button class="btn blue enter" id="enter" type="button">Enter</button>
-  </div>
-  <div class="scamg" id="scamg" hidden></div>
-</div>
+<!-- the intro -->
+<div class="intro" id="intro" aria-hidden="true"><div class="lines"></div><div class="dots"></div><div class="ring"></div><div class="i3d"></div><div class="gl"></div><div class="fl"></div><div class="fill"><img src="/assets/img/favicon.svg" alt=""></div></div>
 
 <main class="world" id="world" aria-label="UNC HQ, a virtual office"></main>
 <div class="scam" id="scam" hidden></div>
-<img class="hud mark" src="/assets/img/favicon.svg" alt="UNC">
-<div class="hud tr">
-  <div class="chip" id="chip" title="Uncs badged"><span class="k">Badged</span><b id="count">—</b></div>
-  <button class="ib" id="infobtn" type="button" aria-label="The fine print" title="The fine print (I)"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M12 10.5v7M12 6.6v.1" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg></button>
-</div>
+<nav class="bar" id="bar" hidden aria-label="Controls">
+  <img class="bm" src="/assets/img/favicon.svg" alt="UNC">
+  <button type="button" data-a="talk" data-key="T"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v10H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg><span>Talk</span></button>
+  <button type="button" data-a="poke" data-key="P"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 13V4.5a1.6 1.6 0 0 1 3.2 0V11l5.2 1.2c1 .2 1.6 1.1 1.5 2.1l-.6 4.2c-.2 1.3-1.3 2.5-2.7 2.5h-4.8c-1 0-1.9-.5-2.4-1.3L5 15.6c-.6-.9.2-2.1 1.3-1.9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Poke</span></button>
+  <button type="button" data-a="headset" data-key="V"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="7" width="19" height="10" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M9.5 17l1.2-2.2h2.6l1.2 2.2" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Headset</span></button>
+  <button type="button" data-a="phone" data-key="F"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M10.5 18.5h3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span>Phone</span></button>
+  <button type="button" data-a="info" data-key="I"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M12 10.5v6.5M12 7.2v.1" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span>Info</span></button>
+  <button type="button" data-a="badge" data-key="B" class="blue"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="9" cy="11" r="2.2" fill="currentColor"/><path d="M13.5 10h4.5M13.5 14h4.5M6 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Badge</span></button>
+</nav>
 <div class="bubble" id="bubble" hidden></div>
 <div class="hud hint" id="hint" hidden>WASD or click to walk · E to use</div>
 <button class="hud prompt" id="prompt" type="button" hidden><kbd>E</kbd><span id="promptText"></span></button>
 <div class="hud stick" id="stick" aria-hidden="true" hidden><i></i></div>
-<div class="hud ctrls" id="ctrls" hidden>
-  <button class="ic" type="button" data-a="talk" data-tip="Talk · T" aria-label="Talk"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg><i>T</i></button>
-  <button class="ic" type="button" data-a="poke" data-tip="Poke · P" aria-label="Poke"><svg viewBox="0 0 24 24"><path d="M9 13V4.5a1.6 1.6 0 0 1 3.2 0V11l5.2 1.2c1 .2 1.6 1.1 1.5 2.1l-.6 4.2c-.2 1.3-1.3 2.5-2.7 2.5h-4.8c-1 0-1.9-.5-2.4-1.3L5 15.6c-.6-.9.2-2.1 1.3-1.9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><i>P</i></button>
-  <button class="ic" type="button" data-a="headset" data-tip="Headset · V" aria-label="Headset"><svg viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="10" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M9.5 17l1.2-2.2h2.6l1.2 2.2" fill="none" stroke="currentColor" stroke-width="2"/></svg><i>V</i></button>
-  <button class="ic" type="button" data-a="phone" data-tip="Phone · F" aria-label="Phone"><svg viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M10.5 18.5h3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><i>F</i></button>
-  <button class="ic blue" type="button" data-a="badge" data-tip="Badge · B" aria-label="Badge"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="9" cy="11" r="2.2" fill="currentColor"/><path d="M13.5 10h4.5M13.5 14h4.5M6 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><i>B</i></button>
-</div>
 <span class="sr" aria-live="polite" id="live"></span>
 
 <!-- the badge -->
@@ -282,7 +267,7 @@ html:not(.ready) .enter{opacity:.45;pointer-events:none}
 
 <script>document.documentElement.classList.add('js');</script>
 <script type="module">
-import { validate, sheet, shareText, plainText } from '/assets/js/sheet.js';
+import { validate, sheet, shareText, plainText } from '/assets/v2/sheet.js';
 const $ = s => document.querySelector(s);
 const C = window.CONFIG || {};
 const html = document.documentElement;
@@ -291,7 +276,7 @@ const html = document.documentElement;
 if (C.ca) {
   const ca = C.ca.replace(/[^0-9a-zA-Z]/g, '');
   const strip = `OFFICIAL TOKEN $UNC <code>${ca}</code><button type="button" data-copyca>Copy</button> — anything else is not ours.`;
-  $('#scam').innerHTML = strip; $('#scamg').innerHTML = strip; $('#scam').hidden = false; $('#scamg').hidden = false; html.classList.add('has-ca');
+  $('#scam').innerHTML = strip; $('#scam').hidden = false; html.classList.add('has-ca');
   $('#carow').hidden = false; $('#cacode').textContent = ca;
   if (C.launchpad) { $('#buy').href = C.launchpad; $('#buy').hidden = false; }
   document.addEventListener('click', async e => { const b = e.target.closest('[data-copyca],#cacopy'); if (!b) return; try { await navigator.clipboard.writeText(ca); const o = b.textContent; b.textContent = 'Copied'; setTimeout(() => b.textContent = o, 1500); } catch {} });
@@ -313,20 +298,10 @@ function openInfo(tab = 'coin') {
   document.querySelectorAll('[data-pane]').forEach(p => p.hidden = p.dataset.pane !== tab);
 }
 document.querySelectorAll('.tabs [data-tab]').forEach(b => b.onclick = () => openInfo(b.dataset.tab));
-$('#infobtn').onclick = () => openInfo('coin');
 
-// ---------- counter ----------
-let shown = null, world = null, lastCount = { ok: true, count: null };
-function countUp(el, to) {
-  const from = Number.isFinite(shown) ? shown : Math.max(0, to - 24), t1 = performance.now();
-  (function step() { const p = Math.min(1, (performance.now() - t1) / 650), v = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))); el.textContent = v.toLocaleString('en-US'); if (p < 1) requestAnimationFrame(step); })();
-}
-function showCount(j) {
-  const ok = !!(j && j.ok), n = j && Number.isFinite(j.count) ? j.count : null;
-  if (ok && n !== null) { countUp($('#count'), n); shown = n; $('#chip').title = 'Uncs badged'; }
-  else { $('#count').textContent = '—'; $('#chip').title = 'Uncs badged'; }
-  world?.setFeed({ count: n, countOk: ok });
-}
+// ---------- counter (shown on THE FEED inside the office) ----------
+let world = null, lastCount = { ok: true, count: null };
+function showCount(j) { const ok = !!(j && j.ok), n = j && Number.isFinite(j.count) ? j.count : null; world?.setFeed({ count: n, countOk: ok }); }
 async function count(method = 'GET') {
   try { const r = await fetch('/api/count', { method, cache: 'no-store' }); lastCount = await r.json(); } catch { lastCount = { ok: false, count: null }; }
   showCount(lastCount);
@@ -367,29 +342,37 @@ const cbs = {
   onArrive: () => { const h = $('#hint'); h.hidden = false; setTimeout(() => h.classList.add('out'), 4200); setTimeout(() => h.hidden = true, 5000); },
   inputBlocked: () => anyOpen() || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName),
 };
-let loadP = 0; const lbar = $('#lbar');
-const tick = setInterval(() => { loadP = Math.min(0.9, loadP + 0.07); lbar.style.width = loadP * 100 + '%'; }, 120);
-function ready() { clearInterval(tick); lbar.style.width = '100%'; html.classList.add('ready'); html.classList.remove('loading'); }
-Promise.all([document.fonts.load('40px Anton'), document.fonts.load('600 20px Plex'), document.fonts.load('800 20px Inter')]).catch(() => {})
-  .then(() => import('/assets/js/world.js'))
-  .then(({ mountWorld }) => { world = mountWorld($('#world'), cbs); world.setFeed({ count: lastCount.count, countOk: lastCount.ok, ca: C.ca || '' }); ready(); })
-  .catch(() => { ready(); const d = document.createElement('div'); d.className = 'fallback'; d.textContent = "The office needs WebGL and this browser didn't give it. Your badge still works: press the badge button."; document.body.append(d); });
-setTimeout(ready, 8000);
-
-let inside = false;
-function enter() {
-  if (inside || !html.classList.contains('ready')) return; inside = true;
-  $('#gate').classList.add('open'); $('#ctrls').hidden = false; $('#stick').hidden = false;
+// intro (4.6s) plays first; the office is built under its final blue frame, then you walk out of the elevator
+let inside = false, intro = null;
+const worldMod = Promise.all([document.fonts.load('40px Anton'), document.fonts.load('600 20px Plex'), document.fonts.load('800 20px Inter')]).catch(() => {}).then(() => import('/assets/v2/world.js'));
+function fail() { const d = document.createElement('div'); d.className = 'fallback'; d.textContent = "The office needs WebGL and this browser didn't give it. Your badge still works: press Badge."; document.body.append(d); }
+async function buildOffice() {
+  try {
+    const { mountWorld } = await worldMod;
+    world = mountWorld($('#world'), cbs); world.setFeed({ count: lastCount.count, countOk: lastCount.ok, ca: C.ca || '' });
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  } catch { fail(); }
+  intro ? intro.release() : enterOffice();
+}
+function enterOffice() {
+  if (inside) return; inside = true;
+  $('#bar').hidden = false; $('#stick').hidden = false; html.classList.remove('loading');
   world?.enter();
 }
-$('#enter').onclick = enter;
+import('/assets/v2/intro.js')
+  .then(({ playIntro }) => { intro = playIntro($('#intro'), { onFill: buildOffice, onDone: enterOffice }); })
+  .catch(() => { $('#intro')?.remove(); intro = null; buildOffice(); });
+setTimeout(() => { if (!inside) { $('#intro')?.remove(); if (!world) buildOffice(); else enterOffice(); } }, 15000);
+
 addEventListener('keydown', e => {
-  if (!inside && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); enter(); return; }
   if (!inside || anyOpen() || e.metaKey || e.ctrlKey || e.altKey || /^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName)) return;
   if (e.key.toLowerCase() === 'i') openInfo('coin');
 });
 prompt.onclick = () => world?.interact();
-document.querySelectorAll('#ctrls [data-a]').forEach(b => b.addEventListener('click', () => { b.dataset.a === 'badge' ? openBadge() : world?.[b.dataset.a](); }));
+document.querySelectorAll('#bar [data-a]').forEach(b => b.addEventListener('click', () => {
+  const a = b.dataset.a;
+  if (a === 'badge') openBadge(); else if (a === 'info') openInfo('coin'); else world?.[a]();
+}));
 
 // virtual stick (phones)
 const stick = $('#stick'), knob = stick.querySelector('i'); let sid = null;
